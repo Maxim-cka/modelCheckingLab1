@@ -15,19 +15,25 @@ public class Main {
         }
     }
 
-    private static boolean check(String string) {
-        boolean wasPointMeet = false;
-        boolean isNumberExist = false;
-        for (int i = 0; i < string.length(); i++) {
-            if (string.charAt(i) >= '0' && string.charAt(i) <= '9') {
-                isNumberExist = true;
-            } else if (string.charAt(i) == '.' && !wasPointMeet) {
-                wasPointMeet = true;
+    static boolean check(String buffer) {
+        int state = 1;
+        for (int i = 0; i < buffer.length(); i++) {
+            if (state == 1 && isNumber(buffer.charAt(i))) {
+                state++;
+            } else if (state == 2 && buffer.charAt(i) == '.') {
+                state++;
+            } else if (state == 3 && isNumber(buffer.charAt(i))) {
+                state++;
+            } else if ((state == 2 || state == 4) && isNumber(buffer.charAt(i))) {
             } else {
                 return false;
             }
         }
 
-        return isNumberExist;
+        return state == 4;
+    }
+
+    static boolean isNumber(char symbol) {
+        return symbol >= '0' && symbol <= '9';
     }
 }
